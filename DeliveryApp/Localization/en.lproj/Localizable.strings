@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  DeliveryApp
+
+  Created by Bhavuk Chawla on 08/07/19.
+  Copyright © 2019 Bhavuk Chawla. All rights reserved.
+*/
+
+"Warning" = "Warning";
+"Some Error occurs please try again!!" = "Some Error occurs please try again!!";
+"Retry" = "Retry";
+"Things To Deliver" = "Things To Deliver";
+"Delivery Details" = "Delivery Details";
+"No internet Connection available. Please Try Again." = "No internet Connection available. Please Try Again.";
+"at" = "at";
+"Cancel" = "Cancel";
+"Loading" = "Loading";
+"Ok" = "Ok";
+"No data found." = "No data found.";
+"Pull to Refresh for Data" = "Pull to Refresh for Data";
