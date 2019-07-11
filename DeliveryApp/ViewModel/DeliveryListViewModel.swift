@@ -25,7 +25,7 @@ class DeliveryListViewModel: NSObject {
     var emptyAlert: (() -> Void)?
 
     // MARK: Private members
-    private var isPagingLoading: Bool = false
+    private var isPageLoading: Bool = false
     private var offset = 0
     private let limit = 20
 
@@ -33,6 +33,18 @@ class DeliveryListViewModel: NSObject {
     var deliveryList = [DeliveryItem]()
     var isRefreshing = false
     var networkManager: NetworkRouter = NetworkManager()
+
+    /// for calling first time check data exist in DB or not
+    func fetchDeliveries() {
+        let deliveries = Array(DBManager.sharedInstance.getDataFromDB())
+        if !deliveries.isEmpty {
+            self.deliveryList = deliveries
+            self.removeLoader?()
+            self.reloadData?()
+        } else {
+            self.requestToServer()
+        }
+    }
 
     // MARK: Interaction with model
 
@@ -48,76 +60,18 @@ class DeliveryListViewModel: NSObject {
             self.reloadData?()
         } else {
             self.emptyAlert?()
-            self.isPagingLoading = false
+            self.isPageLoading = false
             self.forEmptyMessage()
         }
     }
 
+    /// database handling
     private func updateDataToDB() {
         if self.isRefreshing {
             DBManager.sharedInstance.deleteAllFromDatabase()
         }
         if !deliveryList.isEmpty {
             DBManager.sharedInstance.addData(object: deliveryList)
-        }
-    }
-
-}
-
-extension DeliveryListViewModel {
-
-    // MARK: Network call
-
-    /// for calling first time check data exist in DB or not
-    func fetchDeliveries() {
-        let deliveries = Array(DBManager.sharedInstance.getDataFromDB())
-        if !deliveries.isEmpty {
-            self.deliveryList = deliveries
-            self.removeLoader?()
-            self.reloadData?()
-        } else {
-            self.requestToServer()
-        }
-    }
-
-    /// network call data getting from server
-    func requestToServer() {
-        guard Connectivity.isConnectedToInternet else {
-            self.isPagingLoading = false
-            self.removeLoader?()
-            self.removeAndStopFooter?()
-            self.showErrorAlert?(AppLocalization.noInternetConnection)
-            return
-        }
-
-        if deliveryList.isEmpty && !isRefreshing {
-            // for first showing loader in center of screen
-            self.showLoader?()
-        }
-        if deliveryList.count >= limit {
-            // for retry case
-            self.showAndStartFooter?()
-        }
-        networkManager.getDataFromApi(offset: self.offset, limit: self.limit) { [weak self] jsonData, error  in
-            guard let self = self else {
-                return
-            }
-            self.removeLoader?()
-            self.removeAndStopFooter?()
-            self.isPagingLoading = false
-            if let error = error {
-                print("error", error)
-                self.showErrorAlert?(error)
-            } else {
-                if self.isRefreshing {
-                    self.deliveryList.removeAll()
-                    self.reloadData?()
-                    self.endRefreshing?()
-                }
-                self.updateDataToView(json: jsonData)
-                self.updateDataToDB()
-                self.isRefreshing = false
-            }
         }
     }
 
@@ -137,13 +91,65 @@ extension DeliveryListViewModel {
     }
 
     /// For pagination
+    ///
+    /// - Parameter indexPaths: visible's indexpaths
     func pagination(indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if indexPath.row == deliveryList.count - 1 && !isPagingLoading {
+            if indexPath.row == deliveryList.count - 1 && !isPageLoading {
                 self.showAndStartFooter?()
-                isPagingLoading = true
+                isPageLoading = true
                 offset = deliveryList.count
                 self.requestToServer()
+            }
+        }
+    }
+
+    /// managing loading and pagination
+    private func updateLoadingState() {
+        self.isPageLoading = false
+        self.removeLoader?()
+        self.removeAndStopFooter?()
+    }
+
+}
+
+extension DeliveryListViewModel {
+
+    // MARK: Network call Handling
+
+    /// network call data getting from server
+    func requestToServer() {
+        guard Connectivity.isConnectedToInternet else {
+            self.updateLoadingState()
+            self.showErrorAlert?(AppLocalization.noInternetConnection)
+            return
+        }
+
+        if deliveryList.isEmpty && !isRefreshing {
+            // for first showing loader in center of screen
+            self.showLoader?()
+        }
+        if deliveryList.count >= limit {
+            // for retry case
+            self.showAndStartFooter?()
+        }
+        networkManager.getDataFromApi(offset: self.offset, limit: self.limit) { [weak self] jsonData, errorMessage  in
+            guard let self = self else {
+                return
+            }
+            self.updateLoadingState()
+            if let message = errorMessage {
+                print("error", message)
+                self.showErrorAlert?(message)
+            } else {
+                if self.isRefreshing {
+                    self.deliveryList.removeAll()
+                    self.reloadData?()
+                    self.endRefreshing?()
+                }
+                self.updateDataToView(json: jsonData)
+                self.updateDataToDB()
+                self.isRefreshing = false
             }
         }
     }

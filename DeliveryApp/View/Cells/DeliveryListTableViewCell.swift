@@ -74,6 +74,10 @@ class DeliveryListTableViewCell: UITableViewCell {
         parentView.addSubview(deliveryImage)
         parentView.addSubview(deliveryLabel)
 
+        self.addConstraints()
+    }
+
+    private func addConstraints() {
         parentView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor,
                           paddingTop: AppConstant.commonPadding, paddingLeft: AppConstant.commonPadding,
                           paddingBottom: AppConstant.commonPadding, paddingRight: AppConstant.commonPadding,
@@ -96,7 +100,6 @@ class DeliveryListTableViewCell: UITableViewCell {
                              enableInsets: false)
 
         deliveryLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: CGFloat(imageHeight)).isActive = true
-
     }
 
     required init?(coder aDecoder: NSCoder) {

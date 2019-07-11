@@ -29,7 +29,7 @@ class ServiceManagerTests: XCTestCase {
 
     func testEndPoint() {
         let networkManager = NetworkManager()
-        let endPoint = networkManager.creatingEndPoint(offset: 0, limit: 20)
+        let endPoint = networkManager.createDeliveryEndPoint(offset: 0, limit: 20)
         XCTAssertNotNil(endPoint?.baseURL)
         XCTAssertNotNil(endPoint?.httpMethod)
         XCTAssertNotNil(endPoint?.path)

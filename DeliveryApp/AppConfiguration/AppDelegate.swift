@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        let mainViewController = DeliveryListViewController()
-        let navigationController = UINavigationController(rootViewController: mainViewController)
+        let deliveryListViewController = DeliveryListViewController()
+        let navigationController = UINavigationController(rootViewController: deliveryListViewController)
         navigationController.navigationBar.isTranslucent = false
         window!.rootViewController = navigationController
         window!.makeKeyAndVisible()

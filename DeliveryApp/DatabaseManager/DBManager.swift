@@ -22,8 +22,8 @@ class DBManager {
     /// getting data of list
     ///
     /// - Returns: return DeliveryItem array
-    func getDataFromDB() ->   Results<DeliveryItem> {
-        let results: Results<DeliveryItem> =   database.objects(DeliveryItem.self)
+    func getDataFromDB() -> Results<DeliveryItem> {
+        let results: Results<DeliveryItem> = database.objects(DeliveryItem.self)
         return results
     }
 

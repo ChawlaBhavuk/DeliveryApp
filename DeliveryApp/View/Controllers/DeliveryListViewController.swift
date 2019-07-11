@@ -43,15 +43,6 @@ class DeliveryListViewController: UITableViewController {
 
     // MARK: Actions handled
 
-    /// moving to next controller
-    ///
-    /// - Parameter deliveryData: dalivery details object
-    func pushToDeliveryDetailController(deliveryData: DeliveryItem) {
-        let viewModal: DetailViewEventHandler = DeliveryDetailViewModel(deliveryData: deliveryData)
-        let viewController = DeliveryDetailViewController(viewModel: viewModal)
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-
     /// refreshing data
     ///
     /// - Parameter sender: object of sender
@@ -141,7 +132,7 @@ class DeliveryListViewController: UITableViewController {
 
         viewModel.reloadData = { [weak self] in
             DispatchQueue.main.async {
-                self?.tableView.restore()
+                self?.tableView.resetBackgroundView()
                 self?.tableView.reloadData()
             }
         }
@@ -153,6 +144,17 @@ class DeliveryListViewController: UITableViewController {
             }
         }
 
+    }
+
+    // MARK: Move to next controller
+
+    /// moving to next controller
+    ///
+    /// - Parameter deliveryData: dalivery details object
+    func pushToDeliveryDetailController(deliveryData: DeliveryItem) {
+        let viewModal: DetailViewEventHandler = DeliveryDetailViewModel(deliveryData: deliveryData)
+        let viewController = DeliveryDetailViewController(viewModel: viewModal)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -194,6 +196,8 @@ extension DeliveryListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.pushToDeliveryDetailController(deliveryData: viewModel.deliveryList[indexPath.row])
     }
+
+    // MARK: Pagination
 
     /// When scrollview's scrolling ends
     ///

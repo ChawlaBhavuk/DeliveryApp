@@ -91,6 +91,7 @@ __Model:__ hold application data.
 - For more details follow the link https://firebase.google.com/docs/crashlytics/
 
 # Improvements
+-  Notification banners could be implemented in place of UIAlertController
 -  UI Testing could be implemented.
 -  Real time data syncing could be implemented.
 

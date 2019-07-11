@@ -11,15 +11,12 @@ import XCTest
 @testable import DeliveryApp
 
 class DeliveryListViewControllerTests: XCTestCase {
-//      let navigationController = AppDelegate.delegate().window?.rootViewController as! UINavigationController
     var deliveryListViewController: DeliveryListViewController = (AppDelegate.delegate().window?.rootViewController
         as! UINavigationController).viewControllers.first
         as! DeliveryListViewController
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-
-//        deliveryListViewController = navigationController.viewControllers.first as? DeliveryListViewController
     }
 
     func testTableViewDelegateConformance() {

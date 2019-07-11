@@ -37,7 +37,7 @@ class  NetworkManager: NetworkRouter {
     ///   - page: page number
     ///   - completion: callback sending data to origin place
     func getDataFromApi(offset: Int, limit: Int, completion: @escaping ServiceResponse) {
-        guard let endpoint = creatingEndPoint(offset: offset, limit: limit)else {
+        guard let endpoint = createDeliveryEndPoint(offset: offset, limit: limit)else {
             completion(JSON.null, AppLocalization.errorMessage)
             return
         }
@@ -81,13 +81,13 @@ class  NetworkManager: NetworkRouter {
         }
     }
 
-    /// creating Endpoint
+    /// creating Delivery Endpoint
     ///
     /// - Parameters:
     ///   - offset: offset of request
     ///   - limit: limit value
     /// - Returns: returning value of end point
-    func creatingEndPoint(offset: Int, limit: Int) -> EndPointType? {
+    func createDeliveryEndPoint(offset: Int, limit: Int) -> EndPointType? {
         if offset >= 0 && limit > 0 {
             let endpoint = APIEndPoint.baseUrl + APIEndPoint.deliveryService
             let params = [offsetString: offset, limitString: limit]

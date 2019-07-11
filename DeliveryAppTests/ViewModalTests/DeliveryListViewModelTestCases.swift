@@ -44,6 +44,11 @@ class DeliveryListViewModelTestCases: XCTestCase {
         XCTAssertEqual(Array(DBManager.sharedInstance.getDataFromDB()).count, 1)
     }
 
+    func testFetchWithPullToRefresh() {
+        self.viewModel.pullToRefresh()
+        XCTAssertTrue(self.viewModel.deliveryList.count == 1)
+    }
+
     func createMockDeliveryData(idValue: Int) -> [String: Any] {
         let deliveryLocation = ["lat": 28.7041, "lng": 77.1025,
                                 "address": "Deliver documents to Andrio"] as [String: Any]
@@ -61,6 +66,7 @@ class DeliveryListViewModelTestCases: XCTestCase {
     }
 
 }
+
 class MockNetworkManager: NetworkRouter {
     var isError = false
     var noMoreResults = false
