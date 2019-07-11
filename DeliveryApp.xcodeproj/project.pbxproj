@@ -13,6 +13,7 @@
 		6800280422CE088C00C6DC86 /* Extension+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800280322CE088C00C6DC86 /* Extension+UITableView.swift */; };
 		68011A5422C387F0005F1352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68011A5322C387F0005F1352 /* AppDelegate.swift */; };
 		68011A5622C387F0005F1352 /* DeliveryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68011A5522C387F0005F1352 /* DeliveryListViewController.swift */; };
+		68236EEB22D6EC30004298F6 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68236EEA22D6EC30004298F6 /* Connectivity.swift */; };
 		6840967A22C38DE20009E6BA /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6840967822C38DE20009E6BA /* Location.swift */; };
 		6840967B22C38DE20009E6BA /* DeliveryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6840967922C38DE20009E6BA /* DeliveryItem.swift */; };
 		6840967F22C390D30009E6BA /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6840967E22C390D30009E6BA /* NetworkManager.swift */; };
@@ -67,6 +68,7 @@
 		68011A5F22C387F1005F1352 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68011A6422C387F1005F1352 /* DeliveryAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeliveryAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68011A6A22C387F1005F1352 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68236EEA22D6EC30004298F6 /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		6840967822C38DE20009E6BA /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		6840967922C38DE20009E6BA /* DeliveryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryItem.swift; sourceTree = "<group>"; };
 		6840967E22C390D30009E6BA /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -212,9 +214,18 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		68236EE922D6EC1D004298F6 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				68236EEA22D6EC30004298F6 /* Connectivity.swift */,
+			);
+			path = Connectivity;
+			sourceTree = "<group>";
+		};
 		6840967C22C390B30009E6BA /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				68236EE922D6EC1D004298F6 /* Connectivity */,
 				6840968D22C395720009E6BA /* EndPoint */,
 				6840967D22C390D30009E6BA /* Manager */,
 			);
@@ -571,6 +582,7 @@
 			files = (
 				6800280422CE088C00C6DC86 /* Extension+UITableView.swift in Sources */,
 				68011A5622C387F0005F1352 /* DeliveryListViewController.swift in Sources */,
+				68236EEB22D6EC30004298F6 /* Connectivity.swift in Sources */,
 				68740BFC22C5E2D100710488 /* AppLocalization.swift in Sources */,
 				684096A022C3CBBB0009E6BA /* DeliveryListViewModel.swift in Sources */,
 				68740BFE22C5E5A600710488 /* Extension+String.swift in Sources */,

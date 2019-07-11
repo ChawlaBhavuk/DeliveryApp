@@ -37,10 +37,6 @@ class  NetworkManager: NetworkRouter {
     ///   - page: page number
     ///   - completion: callback sending data to origin place
     func getDataFromApi(offset: Int, limit: Int, completion: @escaping ServiceResponse) {
-        guard checkForReachability() else {
-            completion(JSON.null, AppLocalization.noInternetConnection)
-            return
-        }
         guard let endpoint = creatingEndPoint(offset: offset, limit: limit)else {
             completion(JSON.null, AppLocalization.errorMessage)
             return
@@ -51,8 +47,11 @@ class  NetworkManager: NetworkRouter {
         Alamofire.request(url, method: method, parameters: path).validate().responseJSON { response in
             switch response.result {
             case .success:
-                if let jsonData  = try? JSON.init(data: response.data!) {
+                if let data = response.data,
+                    let jsonData  = try? JSON.init(data: data) {
                     completion(jsonData, nil)
+                } else {
+                    completion(JSON.null, AppLocalization.errorMessage)
                 }
             case .failure(let error):
                 Crashlytics.sharedInstance().recordError(error)
@@ -80,14 +79,6 @@ class  NetworkManager: NetworkRouter {
         case 600: return NetworkResponse.outdated.rawValue
         default: return NetworkResponse.failed.rawValue
         }
-    }
-
-    /// For checking internet connection
-    ///
-    /// - Returns: internet exist or not
-    func checkForReachability() -> Bool {
-        let reachabilityManager = NetworkReachabilityManager()
-        return reachabilityManager?.isReachable ?? false
     }
 
     /// creating Endpoint

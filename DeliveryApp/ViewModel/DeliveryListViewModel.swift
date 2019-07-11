@@ -24,11 +24,13 @@ class DeliveryListViewModel: NSObject {
     var showErrorAlert: ((String) -> Void)?
     var emptyAlert: (() -> Void)?
 
-    // MARK: Other members
-    var deliveryList = [DeliveryItem]()
-    var isPagingLoading: Bool = false
+    // MARK: Private members
+    private var isPagingLoading: Bool = false
     private var offset = 0
     private let limit = 20
+
+    // MARK: Other members
+    var deliveryList = [DeliveryItem]()
     var isRefreshing = false
     var networkManager: NetworkRouter = NetworkManager()
 
@@ -37,18 +39,26 @@ class DeliveryListViewModel: NSObject {
     /// getting data from request and sending to model
     ///
     /// - Parameter json: data in form of json
-    func saveAndUpdateData(json: JSON) {
+    private func updateDataToView(json: JSON) {
         guard let data = DeliveryModel(json: json) else {
             return
         }
         if !data.list.isEmpty {
             self.deliveryList.append(contentsOf: data.list)
-            DBManager.sharedInstance.addData(object: data.list)
             self.reloadData?()
         } else {
             self.emptyAlert?()
             self.isPagingLoading = false
             self.forEmptyMessage()
+        }
+    }
+
+    private func updateDataToDB() {
+        if self.isRefreshing {
+            DBManager.sharedInstance.deleteAllFromDatabase()
+        }
+        if !deliveryList.isEmpty {
+            DBManager.sharedInstance.addData(object: deliveryList)
         }
     }
 
@@ -72,6 +82,14 @@ extension DeliveryListViewModel {
 
     /// network call data getting from server
     func requestToServer() {
+        guard Connectivity.isConnectedToInternet else {
+            self.isPagingLoading = false
+            self.removeLoader?()
+            self.removeAndStopFooter?()
+            self.showErrorAlert?(AppLocalization.noInternetConnection)
+            return
+        }
+
         if deliveryList.isEmpty && !isRefreshing {
             // for first showing loader in center of screen
             self.showLoader?()
@@ -86,20 +104,19 @@ extension DeliveryListViewModel {
             }
             self.removeLoader?()
             self.removeAndStopFooter?()
-            if  self.isPagingLoading {
-                self.isPagingLoading = false
-            }
+            self.isPagingLoading = false
             if let error = error {
                 print("error", error)
                 self.showErrorAlert?(error)
             } else {
                 if self.isRefreshing {
-                    self.isRefreshing = false
                     self.deliveryList.removeAll()
-                    DBManager.sharedInstance.deleteAllFromDatabase()
+                    self.reloadData?()
                     self.endRefreshing?()
                 }
-                self.saveAndUpdateData(json: jsonData)
+                self.updateDataToView(json: jsonData)
+                self.updateDataToDB()
+                self.isRefreshing = false
             }
         }
     }

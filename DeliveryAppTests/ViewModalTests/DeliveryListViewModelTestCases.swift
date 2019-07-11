@@ -40,10 +40,8 @@ class DeliveryListViewModelTestCases: XCTestCase {
     }
 
     func testFetchWithLocalStorage() {
-        let jsonData = JSON([self.createMockDeliveryData(idValue: 2)])
-        viewModel.saveAndUpdateData(json: jsonData)
         self.viewModel.fetchDeliveries()
-        XCTAssertEqual(viewModel.deliveryList.count, 1)
+        XCTAssertEqual(Array(DBManager.sharedInstance.getDataFromDB()).count, 1)
     }
 
     func createMockDeliveryData(idValue: Int) -> [String: Any] {

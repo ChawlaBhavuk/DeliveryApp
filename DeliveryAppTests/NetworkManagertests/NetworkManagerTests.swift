@@ -48,15 +48,9 @@ extension ServiceManagerTests {
         let resultExpectation = expectation(description: "Invalid Json")
 
         let networkManager: NetworkRouter = NetworkManager()
-        networkManager.getDataFromApi(offset: 0, limit: 10) { jsonData, error  in
-            if let error = error {
-                XCTAssertNotNil(error, "Expectation fulfilled with error")
-                resultExpectation.fulfill()
-                debugPrint(error)
-            } else {
-                XCTAssertEqual(10, jsonData.count)
-                resultExpectation.fulfill()
-            }
+        networkManager.getDataFromApi(offset: 0, limit: 10) { jsonData, _  in
+            XCTAssertEqual(10, jsonData.count)
+            resultExpectation.fulfill()
         }
         waitForExpectations(timeout: 10) { error in
             if let error = error {
@@ -71,16 +65,9 @@ extension ServiceManagerTests {
         let resultExpectation = expectation(description: "Expected delivery Items")
 
         let networkManager: NetworkRouter = NetworkManager()
-        networkManager.getDataFromApi(offset: 0, limit: 10) { jsonData, error  in
-            if let error = error {
-                XCTAssertNotNil(error, "Expectation failed - No delivery Items from Invalid json")
-                resultExpectation.fulfill()
-                debugPrint(error)
-            } else {
-                XCTAssertNotNil(jsonData, "Invalid Json")
-                XCTAssertEqual(10, jsonData.count)
-                resultExpectation.fulfill()
-            }
+        networkManager.getDataFromApi(offset: 0, limit: 10) { _, error  in
+            XCTAssertNotNil(error, "Expectation fulfilled with error")
+            resultExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10) { error in

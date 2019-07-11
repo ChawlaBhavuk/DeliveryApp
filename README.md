@@ -43,7 +43,7 @@ __Model:__ hold application data.
 - Used iOS Mapkit framework to show map.
 
 ## Data Caching
-- Realm is used for data caching. Items fetched from server are displayed to UI and parallely saved in to Realm
+- Realm is used for data caching. Items fetched from server are displayed to UI and  then save it into Realm Database.
 - If data is available in Realm then it fetchs data from Realm and displayed on UI.
 
 ## Pull to Refresh
@@ -56,7 +56,15 @@ __Model:__ hold application data.
 ## Data Handling
 - First time get data from the server, then showing that data to UI and then save the data to Realm Db next time user come back to app again, fetches data from Realm Db then displayed in the UI.
 
-## Unit Testing
+# Assumptions        
+-   The app is designed for iPhones only.        
+-   App support english language.
+-   Mobile platform supported: iOS (10.x11.x, 12.x)        
+-   Device support - iPhone 5s, iPhone 6 Series, iPhone SE, iPhone 7 Series, iPhone 8 Series, iPhone X Series    
+-   iPhone app support would be limited to portrait mode.
+-   Data caching is available, but pagination not applied on Data caching https://realm.io/docs/objc/latest/#limiting-results.
+
+# Unit Testing
 - Unit testing is done by using XCTest.
 
 # (CocoaPods/Libraries) Used     
@@ -81,14 +89,6 @@ __Model:__ hold application data.
 - Create account on firebase.
 - Please replace "GoogleService-Info.plist" file with your plist file which will be geretated while creating an app on firebase.
 - For more details follow the link https://firebase.google.com/docs/crashlytics/
-
-# Assumptions        
--   The app is designed for iPhones only.        
--   App support english language.
--   Mobile platform supported: iOS (10.x11.x, 12.x)        
--   Device support - iPhone 5s, iPhone 6 Series, iPhone SE, iPhone 7 Series, iPhone 8 Series, iPhone X Series    
--   iPhone app support would be limited to portrait mode.
--   Data caching is available, but pagination not applied on Data caching https://realm.io/docs/objc/latest/#limiting-results.
 
 # Improvements
 -  UI Testing could be implemented.
